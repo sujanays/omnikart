@@ -1,0 +1,60 @@
+import { BLIND, MOTOR, OLDER, type Seed } from "@/store/scripts/catalogue/common";
+
+const SELLER = ["Haat Retail", "Metro Electronics", "BrandStore Official"];
+const mk = (
+  id: string,
+  brand: string,
+  model: string,
+  price: number,
+  mrp: number,
+  ratingCount: number,
+  q: number,
+  ram: number,
+  storage: number,
+  battery: number,
+  screen: number,
+  camera: number,
+  fiveG: boolean,
+  colour: string,
+  extra: Partial<Seed> = {},
+): Seed => ({
+  id,
+  brand,
+  model,
+  price,
+  mrp,
+  ratingCount,
+  stock: 12 + (ratingCount % 40),
+  deliveryDays: 2 + (ratingCount % 3),
+  seller: SELLER[ratingCount % 3],
+  returnDays: 7,
+  q,
+  attrs: { ram, storage, battery, screen, camera, fiveG, colour },
+  keywords: ["phone", "smartphone", "mobile", fiveG ? "5g" : "4g"],
+  ...extra,
+});
+
+export const PHONES: Seed[] = [
+  mk("phone-samsung-m35", "Samsung", "Galaxy M35", 14999, 24499, 48210, 0.82, 6, 128, 6000, 6.6, 50, true, "blue", {
+    hero: true,
+    bestSeller: true,
+    choice: true,
+    touch: true,
+    access: [
+      { by: BLIND, text: { en: "TalkBack reads every screen without trouble, and the fingerprint sensor is easy to find by touch.", hi: "टॉकबैक हर स्क्रीन आराम से पढ़ता है, और फ़िंगरप्रिंट सेंसर छूकर आसानी से मिल जाता है।", te: "టాక్‌బ్యాక్ ప్రతి స్క్రీన్‌ను సులభంగా చదువుతుంది, ఫింగర్‌ప్రింట్ సెన్సర్ తాకి సులభంగా దొరుకుతుంది." } },
+      { by: MOTOR, text: { en: "The power and volume buttons are far apart, so I do not press the wrong one.", hi: "पावर और वॉल्यूम बटन दूर दूर हैं, इसलिए ग़लत बटन नहीं दबता।", te: "పవర్, వాల్యూమ్ బటన్లు దూరంగా ఉన్నాయి, కాబట్టి తప్పు బటన్ నొక్కను." } },
+      { by: OLDER, text: { en: "The text can be made very large and it stays easy to read.", hi: "अक्षर बहुत बड़े किए जा सकते हैं और फिर भी पढ़ना आसान रहता है।", te: "అక్షరాలను చాలా పెద్దవిగా చేయవచ్చు, అయినా చదవడం సులభంగా ఉంటుంది." } },
+    ],
+  }),
+  mk("phone-samsung-a15", "Samsung", "Galaxy A15", 13499, 19999, 23140, 0.7, 4, 128, 5000, 6.5, 50, true, "darkBlue"),
+  mk("phone-samsung-s24fe", "Samsung", "Galaxy S24 FE", 49999, 59999, 6420, 0.9, 8, 256, 4700, 6.7, 50, true, "grey", { choice: true }),
+  mk("phone-redmi-note13", "Redmi", "Note 13 5G", 16999, 21999, 61250, 0.8, 6, 128, 5000, 6.67, 108, true, "purple", { hero: true, bestSeller: true, touch: true }),
+  mk("phone-redmi-13c", "Redmi", "13C 4G", 9799, 12999, 19850, 0.62, 4, 128, 5000, 6.74, 50, false, "black"),
+  mk("phone-redmi-a4", "Redmi", "A4 5G", 8499, 10999, 8370, 0.6, 4, 64, 5160, 6.88, 50, true, "silver"),
+  mk("phone-realme-narzo70x", "realme", "Narzo 70x 5G", 11999, 16999, 27750, 0.72, 6, 128, 5000, 6.72, 50, true, "green"),
+  mk("phone-realme-p3", "realme", "P3 5G", 17999, 21999, 9120, 0.8, 8, 128, 6000, 6.67, 50, true, "purple"),
+  mk("phone-oneplus-nordce4lite", "OnePlus", "Nord CE4 Lite 5G", 17999, 20999, 33510, 0.84, 8, 128, 5500, 6.67, 50, true, "silver", { hero: true, choice: true }),
+  mk("phone-vivo-t3", "Vivo", "T3 5G", 17999, 22999, 22970, 0.76, 8, 128, 5000, 6.67, 50, true, "green"),
+  mk("phone-moto-g45", "Motorola", "g45 5G", 10999, 15999, 14860, 0.72, 8, 128, 5000, 6.5, 50, true, "blue"),
+  mk("phone-iqoo-z9s", "iQOO", "Z9s 5G", 21999, 25999, 11240, 0.86, 8, 128, 5500, 6.77, 50, true, "darkBlue"),
+];

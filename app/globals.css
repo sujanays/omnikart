@@ -1,0 +1,619 @@
+/*
+ * Omnikart, the guide. This file styles the assistant (the dock, the step tracker, the talk button),
+ * the judge page, and what every page shares. The store has its own look in store.css.
+ * Rules this file keeps:
+ *   - nothing is shown by colour alone: highlights also get an outline or a text tag
+ *   - touch targets are at least 48px (64px in calm and one key mode)
+ *   - text size is one variable, --scale, so large text is a one line change
+ *   - every focusable thing has a 3px focus ring
+ */
+
+:root {
+  --scale: 1;
+  --bg: #fffaf2;
+  --surface: #ffffff;
+  --surface-2: #f4ede0;
+  --text: #1b1b1b;
+  --muted: #4a4a4a;
+  --border: #6b6b6b;
+  --primary: #12503a;
+  --on-primary: #ffffff;
+  --accent: #8a4b00;
+  --accent-bg: #fff1d6;
+  --focus: #1d4ed8;
+  --danger: #9b1c1c;
+  --ok: #0f5132;
+  --radius: 14px;
+  --target: 48px;
+  --dock-w: 400px;
+  font-size: calc(16px * var(--scale));
+}
+
+:root[data-theme="contrast"] {
+  --bg: #000000;
+  --surface: #000000;
+  --surface-2: #111111;
+  --text: #ffffff;
+  --muted: #f0f0f0;
+  --border: #ffffff;
+  --primary: #ffe14d;
+  --on-primary: #000000;
+  --accent: #ffe14d;
+  --accent-bg: #1a1a00;
+  --focus: #7dd3fc;
+  --danger: #ff9b9b;
+  --ok: #86efac;
+}
+
+:root[data-calm="true"],
+:root[data-onekey="true"] {
+  --target: 64px;
+}
+
+* {
+  box-sizing: border-box;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Noto Sans Devanagari", "Noto Sans Telugu", "Nirmala UI", sans-serif;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+h1,
+h2,
+h3 {
+  line-height: 1.25;
+}
+p {
+  margin: 0 0 0.75rem;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip {
+  position: absolute;
+  left: 0.5rem;
+  top: -4rem;
+  background: #12503a;
+  color: #fff;
+  padding: 0.75rem 1rem;
+  border-radius: 0 0 var(--radius) var(--radius);
+  z-index: 300;
+  font-weight: 700;
+}
+.skip:focus {
+  top: 0;
+}
+
+/* ---------------- shared buttons (the guide's look: rounded, bold, green) ---------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: var(--target);
+  min-width: var(--target);
+  padding: 0.4rem 1rem;
+  font: inherit;
+  font-weight: 700;
+  color: var(--text);
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn:hover {
+  background: var(--surface-2);
+}
+.btn-primary {
+  background: var(--primary);
+  color: var(--on-primary);
+  border-color: var(--primary);
+}
+.btn-primary:hover {
+  background: var(--primary);
+  filter: brightness(1.12);
+}
+.btn-danger {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+.btn[aria-disabled="true"],
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  border-style: dashed;
+}
+.btn[aria-pressed="true"] {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+}
+.muted {
+  color: var(--muted);
+}
+
+/* ---------------- the guide: dock ---------------- */
+.dock {
+  position: fixed;
+  z-index: 100;
+  background: var(--surface);
+  color: var(--text);
+  border: 0 solid var(--primary);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 22px rgba(0, 0, 0, 0.28);
+}
+@media (min-width: 1100px) {
+  .dock {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: var(--dock-w);
+    border-left-width: 5px;
+  }
+}
+@media (max-width: 1099px) {
+  .dock {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: 56vh;
+    border-top-width: 5px;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+.dock[data-open="false"] {
+  top: auto;
+  left: auto;
+  right: 0.8rem;
+  bottom: 0.8rem;
+  width: auto;
+  max-height: none;
+  border-width: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.dock-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.8rem;
+  background: var(--primary);
+  color: var(--on-primary);
+}
+.dock-head h2 {
+  margin: 0;
+  font-size: 1.05rem;
+  flex: 1;
+}
+.dock-mark {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--on-primary);
+  color: var(--primary);
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+}
+.dock-head .btn {
+  min-height: 2.4rem;
+  background: transparent;
+  color: var(--on-primary);
+  border-color: var(--on-primary);
+  padding: 0 0.7rem;
+  font-size: 0.85rem;
+}
+.dock-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.7rem 0.8rem;
+  display: grid;
+  gap: 0.6rem;
+  align-content: start;
+}
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.25rem;
+  counter-reset: step;
+}
+.steps li {
+  counter-increment: step;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.3rem 0.1rem;
+  border-top: 5px solid var(--border);
+  color: var(--muted);
+}
+.steps li::before {
+  content: counter(step);
+  display: block;
+  font-size: 0.95rem;
+}
+.steps li[data-state="done"] {
+  border-top-color: var(--primary);
+  color: var(--text);
+}
+.steps li[data-state="done"]::before {
+  content: "✓";
+}
+.steps li[aria-current="step"] {
+  border-top-color: var(--primary);
+  background: var(--primary);
+  color: var(--on-primary);
+  border-radius: 0 0 8px 8px;
+}
+.welcome {
+  background: var(--accent-bg);
+  border: 2px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 0.7rem 0.9rem;
+}
+.welcome p {
+  margin: 0 0 0.5rem;
+}
+.talk {
+  width: 100%;
+  min-height: 4.4rem;
+  font: inherit;
+  font-size: 1.1rem;
+  font-weight: 800;
+  border-radius: 999px;
+  border: 3px solid var(--primary);
+  background: var(--primary);
+  color: var(--on-primary);
+  cursor: pointer;
+  padding: 0.5rem 1.2rem;
+}
+.talk[data-status="listening"] {
+  background: var(--surface);
+  color: var(--text);
+  border-style: double;
+  border-width: 8px;
+}
+.talk[data-status="thinking"] {
+  border-style: dashed;
+}
+.talk[data-status="speaking"] {
+  background: var(--accent-bg);
+  color: var(--text);
+  border-color: var(--accent);
+}
+.offline-banner {
+  background: var(--danger);
+  color: #fff;
+  font-weight: 700;
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--radius);
+}
+:root[data-theme="contrast"] .offline-banner {
+  background: #000;
+  color: var(--danger);
+  border: 3px solid var(--danger);
+}
+.captions {
+  display: grid;
+  gap: 0.3rem;
+  max-height: 16rem;
+  overflow-y: auto;
+}
+.captions:empty {
+  display: none;
+}
+.heard {
+  color: var(--muted);
+  margin: 0;
+}
+.caption-line {
+  padding: 0.3rem 0.6rem;
+  border-radius: 10px;
+  white-space: pre-line;
+  margin: 0;
+}
+[data-speaking="true"].caption-line {
+  outline: 4px solid var(--accent);
+  background: var(--accent-bg);
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.chips .btn {
+  min-height: 2.6rem;
+  padding: 0 0.8rem;
+  font-size: 0.9rem;
+}
+.type-form {
+  display: flex;
+  gap: 0.4rem;
+}
+.type-form input[type="text"] {
+  flex: 1;
+  min-width: 0;
+  min-height: var(--target);
+  font: inherit;
+  padding: 0 0.8rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+}
+.dock details > summary {
+  cursor: pointer;
+  min-height: var(--target);
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+}
+.settings {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0.3rem 0;
+}
+.field {
+  display: grid;
+  gap: 0.25rem;
+}
+.field input[type="range"] {
+  width: 100%;
+  min-height: var(--target);
+}
+.field select {
+  min-height: var(--target);
+  font: inherit;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+}
+.check {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  min-height: var(--target);
+}
+.check input {
+  width: 1.6rem;
+  height: 1.6rem;
+  margin-top: 0.15rem;
+  flex: none;
+}
+.log {
+  max-height: 14rem;
+  overflow: auto;
+  margin: 0;
+  padding-left: 1.4rem;
+  font-size: 0.9rem;
+}
+.log li {
+  margin-bottom: 0.2rem;
+}
+.log time {
+  color: var(--muted);
+  margin-right: 0.4rem;
+}
+
+/* ---------------- focus view: the store hidden, only Omnikart's words, large ---------------- */
+.focus-view {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  background: var(--surface);
+  color: var(--text);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 1rem;
+  padding: 1rem;
+}
+.focus-view .words {
+  overflow-y: auto;
+  font-size: 1.9rem;
+  line-height: 1.4;
+  font-weight: 600;
+  align-self: center;
+  max-width: 50rem;
+  margin: 0 auto;
+}
+.focus-view .words p {
+  margin-bottom: 1rem;
+}
+.focus-view .words [data-speaking="true"] {
+  outline: 5px solid var(--accent);
+  background: var(--accent-bg);
+}
+.focus-view .talk {
+  max-width: 50rem;
+  margin: 0 auto;
+  min-height: 5.5rem;
+  font-size: 1.4rem;
+}
+
+/* ---------------- one key mode and calm mode ---------------- */
+.scan-banner {
+  position: fixed;
+  top: 0.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 160;
+  background: var(--primary);
+  color: var(--on-primary);
+  padding: 0.8rem 1.5rem;
+  border-radius: var(--radius);
+  font-size: 1.3rem;
+  font-weight: 800;
+  text-align: center;
+  max-width: 92vw;
+  border: 4px solid var(--on-primary);
+}
+.scan-banner small {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.calm-card {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 140;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  background: var(--surface);
+  border-bottom: 4px solid var(--primary);
+  padding: 1.25rem 1rem;
+  min-height: 40vh;
+}
+@media (min-width: 1100px) {
+  .calm-card {
+    right: var(--dock-w);
+  }
+}
+.calm-card .step {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+.calm-card .title {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+.calm-card .value {
+  font-size: 3.4rem;
+  font-weight: 900;
+  line-height: 1.15;
+}
+.flash {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 400;
+  border: 0 solid var(--accent);
+  transition: border-width 0.12s ease;
+}
+.flash[data-on="true"] {
+  border-width: 14px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .flash {
+    transition: none;
+  }
+}
+
+/* ---------------- judge page ---------------- */
+.judge {
+  max-width: 78rem;
+  margin: 0 auto;
+  padding: 1rem;
+}
+@media (min-width: 1100px) {
+  body[data-dock="open"] .judge {
+    margin-right: calc(var(--dock-w) + 1rem);
+  }
+}
+.judge-head {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+.two-col {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (max-width: 52rem) {
+  .two-col {
+    grid-template-columns: 1fr;
+  }
+}
+.panel {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+.panel h2,
+.panel h3 {
+  margin-top: 0;
+}
+.pill {
+  display: inline-block;
+  padding: 0.1rem 0.6rem;
+  border: 2px solid var(--border);
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+.pill[data-ok="true"]::before {
+  content: "OK ";
+}
+.pill[data-ok="false"]::before {
+  content: "PROBLEM ";
+}
+.judge table {
+  border-collapse: collapse;
+  width: 100%;
+  background: var(--surface);
+}
+.judge th,
+.judge td {
+  text-align: left;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--border);
+  vertical-align: top;
+}
+.judge th {
+  background: var(--surface-2);
+}
+.judge caption {
+  text-align: left;
+  font-weight: 800;
+  padding: 0.4rem 0;
+}
+.reviews {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+.reviews li {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 0.55rem 0.8rem;
+}

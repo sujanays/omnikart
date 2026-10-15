@@ -1,0 +1,62 @@
+import { BLIND, MOTOR, OLDER, type Seed } from "@/store/scripts/catalogue/common";
+
+const SELLER = ["Sound Hub", "BrandStore Official", "Haat Retail"];
+const mk = (
+  id: string,
+  brand: string,
+  model: string,
+  modelHi: string,
+  modelTe: string,
+  price: number,
+  mrp: number,
+  ratingCount: number,
+  q: number,
+  hours: number,
+  anc: boolean,
+  ipx: number,
+  driver: number,
+  bluetooth: string,
+  colour: string,
+  extra: Partial<Seed> = {},
+): Seed => ({
+  id,
+  brand,
+  model,
+  modelHi,
+  modelTe,
+  price,
+  mrp,
+  ratingCount,
+  stock: 30 + (ratingCount % 100),
+  deliveryDays: 2 + (ratingCount % 3),
+  seller: SELLER[ratingCount % 3],
+  returnDays: 10,
+  q,
+  attrs: { hours, anc, ipx, driver, bluetooth, colour },
+  keywords: ["earbuds", "earphones", "bluetooth", "wireless", "tws", ...(brand === "Apple" ? ["airpods", "airpod"] : [])],
+  ...extra,
+});
+
+export const EARBUDS: Seed[] = [
+  mk("earbuds-boat-141", "boAt", "Airdopes 141", "एयरडोप्स 141", "ఎయిర్‌డోప్స్ 141", 999, 4490, 312450, 0.74, 42, false, 4, 8, "5.3", "black", {
+    hero: true,
+    bestSeller: true,
+    touch: true,
+    access: [
+      { by: BLIND, text: { en: "A voice says 'connected' and 'battery low', so I never need to look at a screen. The case lid clicks shut.", hi: "एक आवाज़ 'कनेक्टेड' और 'बैटरी कम' बोलती है, इसलिए स्क्रीन देखने की ज़रूरत नहीं पड़ती। केस का ढक्कन क्लिक के साथ बंद होता है।", te: "'కనెక్టెడ్', 'బ్యాటరీ తక్కువ' అని ఒక గొంతు చెబుతుంది, కాబట్టి స్క్రీన్ చూడాల్సిన అవసరం లేదు. కేస్ మూత క్లిక్‌తో మూసుకుంటుంది." } },
+      { by: MOTOR, text: { en: "The touch panels are large and easy to tap, and the case opens with a thumb.", hi: "टच पैनल बड़े हैं और आसानी से दबते हैं, और केस अँगूठे से खुल जाता है।", te: "టచ్ ప్యానెళ్లు పెద్దవి, సులభంగా తాకవచ్చు, కేస్ బొటనవేలితో తెరుచుకుంటుంది." } },
+      { by: OLDER, text: { en: "The voice prompts are loud and clear, and the case is big enough not to get lost.", hi: "आवाज़ वाले संदेश तेज़ और साफ़ हैं, और केस इतना बड़ा है कि खोता नहीं।", te: "వాయిస్ సందేశాలు గట్టిగా, స్పష్టంగా ఉన్నాయి, కేస్ పోగొట్టుకోలేనంత పెద్దది." } },
+    ],
+  }),
+  mk("earbuds-boat-311pro", "boAt", "Airdopes 311 Pro", "एयरडोप्स 311 प्रो", "ఎయిర్‌డోప్స్ 311 ప్రో", 1299, 4990, 98230, 0.7, 50, false, 5, 10, "5.3", "blue"),
+  mk("earbuds-noise-vs102", "Noise", "Buds VS102", "बड्स वीएस102", "బడ్స్ వీఎస్102", 999, 2999, 154320, 0.68, 50, false, 5, 13, "5.3", "black"),
+  mk("earbuds-noise-airbudspro3", "Noise", "Air Buds Pro 3", "एयर बड्स प्रो 3", "ఎయిర్ బడ్స్ ప్రో 3", 2499, 5999, 20420, 0.74, 50, true, 5, 11, "5.3", "silver"),
+  mk("earbuds-realme-t110", "realme", "Buds T110", "बड्स टी110", "బడ్స్ టీ110", 1299, 2299, 87210, 0.7, 38, true, 5, 12, "5.4", "black"),
+  mk("earbuds-oneplus-nordbuds3pro", "OnePlus", "Nord Buds 3 Pro", "नॉर्ड बड्स 3 प्रो", "నార్డ్ బడ్స్ 3 ప్రో", 2799, 3299, 26800, 0.84, 44, true, 5, 12, "5.4", "white", { hero: true, choice: true }),
+  mk("earbuds-sony-wfc510", "Sony", "WF-C510", "डब्ल्यूएफ सी510", "డబ్ల్యూఎఫ్ సీ510", 4490, 5990, 3820, 0.84, 22, false, 4, 6, "5.3", "black"),
+  mk("earbuds-jbl-wavebuds", "JBL", "Wave Buds", "वेव बड्स", "వేవ్ బడ్స్", 2999, 4999, 36540, 0.78, 40, false, 2, 8, "5.2", "black"),
+  mk("earbuds-apple-airpodspro2", "Apple", "AirPods Pro (2nd generation)", "एयरपॉड्स प्रो दूसरी पीढ़ी", "ఎయిర్‌పాడ్స్ ప్రో రెండవ తరం", 24900, 26900, 14250, 0.94, 30, true, 4, 11, "5.3", "white", { hero: true, choice: true }),
+  mk("earbuds-apple-airpods4", "Apple", "AirPods (4th generation)", "एयरपॉड्स चौथी पीढ़ी", "ఎయిర్‌పాడ్స్ నాలుగవ తరం", 12900, 12900, 4150, 0.86, 30, false, 4, 11, "5.3", "white"),
+  mk("earbuds-samsung-budsfe", "Samsung", "Galaxy Buds FE", "गैलेक्सी बड्स एफ़ई", "గెలాక్సీ బడ్స్ ఎఫ్‌ఈ", 6999, 9999, 9280, 0.8, 30, true, 2, 12, "5.4", "grey"),
+  mk("earbuds-boult-z40", "Boult", "Z40", "ज़ेड40", "జెడ్40", 899, 3999, 133420, 0.66, 100, false, 5, 10, "5.3", "black"),
+];

@@ -1,0 +1,63 @@
+import { BLIND, MOTOR, OLDER, type Seed } from "@/store/scripts/catalogue/common";
+
+const SELLER = ["Shoe Plaza", "BrandStore Official", "Haat Retail"];
+const mk = (
+  id: string,
+  brand: string,
+  model: string,
+  modelHi: string,
+  modelTe: string,
+  price: number,
+  mrp: number,
+  ratingCount: number,
+  q: number,
+  gender: "men" | "women",
+  type: "sports" | "casual" | "formal",
+  closure: "laces" | "slipOn",
+  material: "mesh" | "leather" | "synthetic",
+  colour: string,
+  sizes: number[],
+  extra: Partial<Seed> = {},
+): Seed => ({
+  id,
+  brand,
+  model,
+  modelHi,
+  modelTe,
+  price,
+  mrp,
+  ratingCount,
+  stock: 15 + (ratingCount % 50),
+  deliveryDays: 2 + (ratingCount % 4),
+  seller: SELLER[ratingCount % 3],
+  returnDays: 30,
+  q,
+  attrs: { gender, type, closure, material, colour, sizes },
+  keywords: ["shoes", "footwear", "sneakers", type, gender],
+  ...extra,
+});
+
+export const SHOES: Seed[] = [
+  mk("shoes-nike-revolution7", "Nike", "Revolution 7", "रेवोल्यूशन 7", "రెవల్యూషన్ 7", 3995, 4995, 21480, 0.86, "men", "sports", "laces", "mesh", "black", [7, 8, 9, 10, 11], {
+    hero: true,
+    bestSeller: true,
+    choice: true,
+    touch: true,
+    access: [
+      { by: BLIND, text: { en: "A raised dot on the tongue marks the left shoe, so I can tell left from right by touch.", hi: "जीभ पर उभरा हुआ बिंदु बाएँ जूते को पहचानने में मदद करता है, इसलिए छूकर दाएँ बाएँ का पता चल जाता है।", te: "నాలుకపై ఉబ్బిన చుక్క ఎడమ బూటును సూచిస్తుంది, కాబట్టి తాకి ఎడమ, కుడి తెలుసుకోవచ్చు." } },
+      { by: MOTOR, text: { en: "The heel has a pull loop and the laces are flat, so I can put them on with one hand.", hi: "एड़ी पर खींचने का फंदा है और फीते चपटे हैं, इसलिए एक हाथ से पहन लेता हूँ।", te: "మడమపై లాగే లూప్ ఉంది, లేసులు చదునుగా ఉన్నాయి, ఒక చేత్తో వేసుకోగలను." } },
+      { by: OLDER, text: { en: "The sole is soft on the knees and the shoe is light to walk in.", hi: "तलवा घुटनों पर नरम है और जूता चलने में हल्का है।", te: "అడుగు భాగం మోకాళ్లకు మెత్తగా ఉంది, నడవడానికి బూటు తేలికగా ఉంది." } },
+    ],
+  }),
+  mk("shoes-adidas-questar2", "Adidas", "Questar 2", "क्वेस्टर 2", "క్వెస్టర్ 2", 3199, 5999, 17330, 0.82, "men", "sports", "laces", "mesh", "navy", [6, 7, 8, 9, 10]),
+  mk("shoes-puma-softride", "Puma", "Softride Sophia", "सॉफ्टराइड सोफ़िया", "సాఫ్ట్‌రైడ్ సోఫియా", 2099, 4999, 6260, 0.78, "women", "sports", "laces", "mesh", "white", [3, 4, 5, 6, 7]),
+  mk("shoes-skechers-gowalk", "Skechers", "Go Walk", "गो वॉक", "గో వాక్", 3999, 6499, 7120, 0.88, "men", "casual", "slipOn", "mesh", "grey", [7, 8, 9, 10]),
+  mk("shoes-bata-oxford", "Bata", "Oxford Derby", "ऑक्सफ़ोर्ड डर्बी", "ఆక్స్‌ఫర్డ్ డెర్బీ", 1799, 2499, 12450, 0.76, "men", "formal", "laces", "leather", "black", [6, 7, 8, 9, 10], { hero: true }),
+  mk("shoes-campus-oxyfit", "Campus", "Oxyfit", "ऑक्सीफ़िट", "ఆక్సీఫిట్", 899, 1699, 88100, 0.68, "men", "sports", "laces", "mesh", "blue", [6, 7, 8, 9, 10, 11], { hero: true, bestSeller: true }),
+  mk("shoes-woodland-trekker", "Woodland", "Trekker", "ट्रेकर", "ట్రెక్కర్", 3995, 5695, 9340, 0.82, "men", "casual", "laces", "leather", "brown", [7, 8, 9, 10]),
+  mk("shoes-redtape-derby", "Red Tape", "Derby", "डर्बी", "డెర్బీ", 1999, 4999, 6480, 0.72, "men", "formal", "laces", "leather", "brown", [6, 7, 8, 9, 10]),
+  mk("shoes-liberty-gliders", "Liberty", "Gliders", "ग्लाइडर्स", "గ్లైడర్స్", 899, 1199, 5240, 0.66, "women", "casual", "slipOn", "synthetic", "navy", [3, 4, 5, 6, 7]),
+  mk("shoes-sparx-sm9", "Sparx", "SM-9", "एसएम 9", "ఎస్ఎం 9", 799, 1299, 56020, 0.66, "men", "sports", "laces", "synthetic", "grey", [6, 7, 8, 9, 10]),
+  mk("shoes-reebok-energyrunner", "Reebok", "Energy Runner", "एनर्जी रनर", "ఎనర్జీ రన్నర్", 2499, 6999, 5640, 0.76, "men", "sports", "laces", "mesh", "red", [7, 8, 9, 10, 11]),
+  mk("shoes-asian-wonder", "Asian", "Wonder", "वंडर", "వండర్", 699, 1499, 18210, 0.64, "women", "sports", "laces", "mesh", "purple", [3, 4, 5, 6, 7, 8]),
+];
